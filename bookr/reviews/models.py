@@ -12,7 +12,7 @@ class Publisher(models.Model):
     email = models.EmailField(
         help_text="The Publisher's email address.")
 
-    def str(self):
+    def __str__(self):
         return self.name
 
 
@@ -25,7 +25,7 @@ class Contributor(models.Model):
     email = models.EmailField(
         help_text="The contact email for the contributor.")
 
-    def str(self):
+    def __str__(self):
         return self.first_names
 
 
@@ -43,7 +43,7 @@ class Book(models.Model):
         Contributor, through="BookContributor"
     )
 
-    def str(self):
+    def __str__(self):
         return self.title
 
 
