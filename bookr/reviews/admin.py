@@ -13,9 +13,17 @@ class BookAdmin(admin.ModelAdmin):
         return bool(obj.isbn)
 
 
+class ReviewAdmin(admin.ModelAdmin):
+    exclude = ('date_edited',)
+    fieldsets = (
+        (None, {"fields": ("creator", "book")}),
+        ("Review content", {"fields": ("content", "rating")}),
+    )
+
+
 # Register your models here.
 admin.site.register(Publisher)
 admin.site.register(Contributor)
 admin.site.register(Book, BookAdmin)
 admin.site.register(BookContributor)
-admin.site.register(Review)
+admin.site.register(Review, ReviewAdmin)
