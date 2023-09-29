@@ -21,9 +21,20 @@ class ReviewAdmin(admin.ModelAdmin):
     )
 
 
+def initialled_name(obj):
+    initials = ''.join([name[0] for name in obj.first_names.split(' ')])
+    return "{}, {}".format(obj.last_names, initials)
+
+
+class ContributorAdmin(admin.ModelAdmin):
+    list_display = ("last_names", "first_names")
+    search_fields = ('first_names', 'last_names__startswith')
+    list_filter = ('last_names', )
+
+
 # Register your models here.
 admin.site.register(Publisher)
-admin.site.register(Contributor)
+admin.site.register(Contributor, ContributorAdmin)
 admin.site.register(Book, BookAdmin)
 admin.site.register(BookContributor)
 admin.site.register(Review, ReviewAdmin)
