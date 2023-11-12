@@ -1,16 +1,31 @@
 from django.shortcuts import render, get_object_or_404
+from django.db.models import Q
 
-from .models import Book
+from .models import Book, Contributor
 from .utils import average_rating
-
+from .forms import SearchForm 
 
 def index(request):
     return render(request, "base.html")
 
 
 def book_search(request):
+    form = SearchForm(request.GET)
+    books = set()
+    if form.is_valid() and form.cleaned_data["search"]:
+        search = form.cleaned_data["search"]
+        search_in = form.cleaned_data.get("search_in") or "title"
+        if search_in == "title":
+            books = Book.objects.filter(title__icontains=search)
+        else:
+            contributors = Contributor.objects.filter(Q(first_names__icontains=search) | Q(last_names__icontains=search))
+            print("contributors", contributors)
+            for contributor in contributors:
+                for book in contributor.book_set.all():
+                    books.add(book)
+    
     search_text = request.GET.get("search", "")
-    return render(request, "reviews/search-results.html", {"search_text": search_text})
+    return render(request, "reviews/search-results.html", {"search_text": search_text, "books": books, "form": form})
 
 
 def book_list(request):
@@ -32,7 +47,7 @@ def book_list(request):
     return render(request, 'reviews/book_list.html', context)
 
 
-def book_details(request, pk):
+def book_detail(request, pk):
     book = get_object_or_404(Book, pk=pk)
     reviews = book.review_set.all()
     if reviews:
@@ -43,4 +58,4 @@ def book_details(request, pk):
     context = {'book': book,
                'reviews': reviews,
                'overall_rating': overall_rating}
-    return render(request, 'reviews/book_details.html', context)
+    return render(request, 'reviews/book_detail.html', context)
