@@ -1,4 +1,4 @@
-from django.contrib import auth
+from django.contrib import auth, admin
 from django.db import models
 
 
@@ -45,6 +45,17 @@ class Book(models.Model):
 
     def __str__(self):
         return self.title
+
+    @admin.display(ordering='isbn',
+        description='ISBN-13',
+        empty_value='-/-')
+    def isbn13(self):
+        return "{}-{}-{}-{}-{}".format(
+            self.isbn[0:3],
+            self.isbn[3:4],
+            self.isbn[4:6],
+            self.isbn[6:12],
+            self.isbn[12:13])
 
 
 class BookContributor(models.Model):

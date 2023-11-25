@@ -1,5 +1,5 @@
 """
-URL configuration for bookr project.
+URL configuration for comment8or project.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/4.2/topics/http/urls/
@@ -14,12 +14,9 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-import reviews.views
 from django.contrib import admin
-from django.urls import include, path
+from django.urls import path
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('book-search/', reviews.views.book_search, name='book_search'),
-    path('', include('reviews.urls'))
 ]
