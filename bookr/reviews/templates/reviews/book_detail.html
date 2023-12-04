@@ -32,8 +32,9 @@
             <span class="text-info">Creator: </span><span>{{ review.creator.username }}</span>
             <br>
         </li>
+        <a href="/books/{{ book.id }}/reviews/{{ review.id }}">Edit review</a>
     {% endfor %}
     </ul>
 {% endif %}
-
+<a class="btn btn-primary" href="/books/{{ book.id }}/reviews/new">Add review</a>
 {% endblock %}

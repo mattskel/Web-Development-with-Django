@@ -8,4 +8,6 @@ urlpatterns = [
     path('books/<int:pk>', views.book_detail, name='book_detail'),
     path('book-search/', views.book_search, name='book_search'),
     path('publishers/<int:pk>', views.publisher_edit, name="publisher_edit"),
-    path('publishers/new', views.publisher_edit, name="publisher_create")]
+    path('publishers/new', views.publisher_edit, name="publisher_create"),
+    path('books/<book_pk>/reviews/new', views.review_edit, name="review_create"),
+    path('books/<book_pk>/reviews/<review_pk>', views.review_edit, name="review_edit")]
