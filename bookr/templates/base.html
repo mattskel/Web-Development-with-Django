@@ -1,4 +1,5 @@
 <!doctype html>
+{% load static %}
 <html lang="en">
   <head>
     <!-- Required meta tags -->
@@ -10,20 +11,15 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-    <title>Book Review</title>
-    <style type="text/css">
-      .navbar {
-        min-height: 100px;
-        font-size: 25px;
-      }
-      .navbar-brand {
-        font-size: 25px;
-      }
-    </style>
+    <title>{% block title %}Bookr{% endblock %}</title>
+    <link rel="stylesheet" href="{%static 'main.css'%}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Libre+Baskerville|Source+Sans+Pro&display=swap">
   </head>
   <body>
     <nav class="navbar navbar-expand-sm navbar-dark bg-dark sticky-top">
-      <a class="navbar-brand" href="/">Book Review</a>
+      <a class="navbar-brand" href="/">{% block brand %}
+        <img src="{% static 'logo.png' %}">
+      Book Review{% endblock %}</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -42,9 +38,17 @@
         </form>
       </div>
     </nav>
-     {% block content %}
-    <h1>Welcome to Bookr!</h1>
-    {% endblock %}
+    <div class="container-fluid">
+      {% for message in messages %}
+        <div class="alert alert-{% if message.level_tag == 'error' %}danger{% else %}{{message.level_tag}}{% endif %}"
+          role="alert">
+          {{ message }}
+        </div>
+      {% endfor %}
+      {% block content %}
+      <h1>Welcome to Bookr!</h1>
+      {% endblock %}
+    </div>
   <!-- Copyright -->
   <footer class="page-footer font-small blue">
     <div class="footer-copyright text-center py-3">&copy;© 2022 Copyright:

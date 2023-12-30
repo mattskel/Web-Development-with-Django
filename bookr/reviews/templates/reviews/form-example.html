@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Form example</title>
+</head>
+<body>
+{% for message in messages %}
+<p><em>{{ message.level_tag|title }}:</em>{{ message }}</p>
+{% endfor %}
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <p>
+        <input type="submit" value="Submit">
+    </p>
+</form>
+</body>
+</html>

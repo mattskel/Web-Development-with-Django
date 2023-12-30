@@ -1,0 +1,36 @@
+{% extends './base.html' %}
+{% block title %}
+    {% if form.is_valid and search_text %}
+        Search results for "{{search_text}}"
+    {% else %}
+        Book search
+    {% endif %}
+{% endblock %}
+{% block content %}
+<h2>Search for books</h2>
+<form>
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+{% if form.is_valid and search_text %}
+<h3>Search results for <em>{{ search_text }}</em></h3>
+<ul class="list-group">
+    {% for book in books %}
+    <li class="list-group-item">
+        <span class="text-info">Title: </span><a href="{% url 'book_detail' book.pk %}">{{ book }}</a>
+
+        <br/>
+        <span class="text-info">Contributors: </span>
+        {% for contributor in book.contributors.all %}
+            {{ contributor.first_names }} {{ contributor.last_names }} {% if not forloop.last %},{% endif %}
+        {% endfor %}
+    </li>
+    {% empty %}
+        <li class="list-group-item">No result found.</li>
+    {% endfor %}
+</ul>
+{% endif %}
+        
+</body>
+</html>
+{% endblock %}
