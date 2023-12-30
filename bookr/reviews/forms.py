@@ -2,6 +2,7 @@ from django import forms
 
 from .models import Publisher
 from .models import Review
+from .models import Book
 
 SEARCH_CHOICES = (
     ("title", "Title"),
@@ -25,3 +26,8 @@ class ReviewForm(forms.ModelForm):
         exclude = ["date_edited", "book"]
 
     rating = forms.IntegerField(max_value=5, min_value=0)    
+
+class BookMediaForm(forms.ModelForm):
+    class Meta:
+        model = Book
+        fields = ['cover', 'sample']

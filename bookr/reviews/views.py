@@ -1,11 +1,14 @@
+from io import BytesIO
+from PIL import Image
 from django.shortcuts import render, get_object_or_404, redirect
 from django.db.models import Q
 from django.contrib import messages
 from django.utils import timezone
+from django.core.files.images import ImageFile
 
 from .models import Book, Contributor, Publisher, Review
 from .utils import average_rating
-from .forms import SearchForm, PublisherForm, ReviewForm
+from .forms import SearchForm, PublisherForm, ReviewForm, BookMediaForm
 
 def index(request):
     return render(request, "base.html")
@@ -121,3 +124,32 @@ def review_edit(request, book_pk, review_pk=None):
         "model_type": "Review",
 
     })
+
+def book_media(request, pk):
+    instance = get_object_or_404(Book, pk=pk)
+    print(instance.isbn)
+    if request.method == 'POST':
+        form = BookMediaForm(request.POST, request.FILES, instance=instance)
+        if form.is_valid():
+            instance = form.save(False)
+            if form.cleaned_data['cover']:
+                image = Image.open(form.cleaned_data['cover'])
+                image.thumbnail((300, 300))
+                image_data = BytesIO()
+                image.save(fp=image_data, format = form.cleaned_data['cover'].image.format)
+                image_file = ImageFile(image_data)
+                instance.cover.save(form.cleaned_data['cover'].name, image_file)
+
+            instance.save()
+            messages.success(request, "Book \"{}\" was successfully updated.".format(instance))
+            return redirect("book_detail", pk)
+
+    else:
+        form = BookMediaForm(instance=instance)
+
+    print('instance', instance)
+    return render(request, 'reviews/instance-form.html', {
+        "form": form, 
+        "model_type": 'Book',
+        "instance": instance,
+        "is_file_upload": True})

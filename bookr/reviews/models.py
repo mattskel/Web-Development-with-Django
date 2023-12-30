@@ -42,6 +42,12 @@ class Book(models.Model):
     contributors = models.ManyToManyField(
         Contributor, through="BookContributor"
     )
+    cover = models.ImageField(null=True,
+                            blank=True,
+                            upload_to='book_covers/')
+    sample = models.FileField(null=True,
+                            blank=True,
+                            upload_to='book_samples/')
 
     def __str__(self):
         return self.title
