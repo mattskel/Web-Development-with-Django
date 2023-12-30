@@ -126,30 +126,28 @@ def review_edit(request, book_pk, review_pk=None):
     })
 
 def book_media(request, pk):
-    instance = get_object_or_404(Book, pk=pk)
-    print(instance.isbn)
+    book = get_object_or_404(Book, pk=pk)
     if request.method == 'POST':
-        form = BookMediaForm(request.POST, request.FILES, instance=instance)
+        form = BookMediaForm(request.POST, request.FILES, instance=book)
         if form.is_valid():
-            instance = form.save(False)
+            book = form.save(False)
             if form.cleaned_data['cover']:
                 image = Image.open(form.cleaned_data['cover'])
                 image.thumbnail((300, 300))
                 image_data = BytesIO()
                 image.save(fp=image_data, format = form.cleaned_data['cover'].image.format)
                 image_file = ImageFile(image_data)
-                instance.cover.save(form.cleaned_data['cover'].name, image_file)
+                book.cover.save(form.cleaned_data['cover'].name, image_file)
 
-            instance.save()
-            messages.success(request, "Book \"{}\" was successfully updated.".format(instance))
+            book.save()
+            messages.success(request, "Book \"{}\" was successfully updated.".format(book))
             return redirect("book_detail", pk)
 
     else:
-        form = BookMediaForm(instance=instance)
+        form = BookMediaForm(instance=book)
 
-    print('instance', instance)
     return render(request, 'reviews/instance-form.html', {
         "form": form, 
         "model_type": 'Book',
-        "instance": instance,
+        "instance": book,
         "is_file_upload": True})
