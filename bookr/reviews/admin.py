@@ -5,12 +5,15 @@ from reviews.models import (Publisher, Contributor, Book, BookContributor, Revie
 class BookAdmin(admin.ModelAdmin):
     search_fields = ('title', 'isbn', 'publisher__name')
     date_hierarchy = 'publication_date'
-    list_display = ('title', 'isbn13', 'has_isbn')
+    list_display = ('title', 'isbn13', 'has_isbn', 'get_publisher')
     list_filter = ('publisher', 'publication_date')
 
     @admin.display(boolean=True, description='Has ISBN')
     def has_isbn(self, obj):
         return bool(obj.isbn)
+
+    def get_publisher(sef, obj):
+        return obj.publisher.name
 
 
 class ReviewAdmin(admin.ModelAdmin):
