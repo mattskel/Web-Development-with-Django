@@ -16,8 +16,9 @@ from .forms import SearchForm, PublisherForm, ReviewForm, BookMediaForm
 def index(request):
     return render(request, "base.html")
 
-
 def book_search(request):
+    search_text = request.GET.get("search", "")
+    search_history = request.session.get('search_history', [])
     form = SearchForm(request.GET)
     books = set()
     if form.is_valid() and form.cleaned_data["search"]:
@@ -27,12 +28,21 @@ def book_search(request):
             books = Book.objects.filter(title__icontains=search)
         else:
             contributors = Contributor.objects.filter(Q(first_names__icontains=search) | Q(last_names__icontains=search))
-            print("contributors", contributors)
             for contributor in contributors:
                 for book in contributor.book_set.all():
                     books.add(book)
     
-    search_text = request.GET.get("search", "")
+        if request.user.is_authenticated:
+            user_search = [search, search_in]
+            search_history.append(user_search)
+            request.session["search_history"] = search_history
+            
+
+    elif search_history:
+        [_search, search_in] = search_history[-1]
+        initial = dict(search=search_text, search_in=search_in)
+        form = SearchForm(initial=initial)
+    
     return render(request, "reviews/search-results.html", {"search_text": search_text, "books": books, "form": form})
 
 
