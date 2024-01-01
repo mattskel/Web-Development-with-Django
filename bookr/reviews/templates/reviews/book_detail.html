@@ -22,8 +22,10 @@
 <br>
 
 {% if not reviews %}
+    {% if user.is_authenticated %}
     <hr>
     <h3>Be the first one to write a review.</h3>
+    {% endif %}
 {% else %}
     <hr>
     <h3>Review comments</h3>
@@ -41,9 +43,14 @@
             <span class="text-info">Creator: </span><span>{{ review.creator.username }}</span>
             <br>
         </li>
+        {% if user.is_staff or user.id == review.creator.id %}
         <a href="/books/{{ book.id }}/reviews/{{ review.id }}">Edit review</a>
+        {% endif %}
     {% endfor %}
     </ul>
 {% endif %}
+{% if user.is_authenticated %}
 <a class="btn btn-primary" href="/books/{{ book.id }}/reviews/new">Add review</a>
+<a class="btn btn-primary" href="{% url 'media' book.pk %}">Media</a>
+{% endif %}
 {% endblock %}
