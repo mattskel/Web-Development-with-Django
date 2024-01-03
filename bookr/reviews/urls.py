@@ -13,4 +13,5 @@ urlpatterns = [
     path('books/<book_pk>/reviews/<review_pk>', views.review_edit, name="review_edit"),
     path('books/<pk>/media/', views.book_media, name="media"),
     path('api/first_api_view/', api_views.first_api_view),
+    path('api/all_books/', api_views.all_books, name='all_books')
 ]
