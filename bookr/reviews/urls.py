@@ -28,5 +28,6 @@ urlpatterns = [
     path('books/<int:book_pk>/reviews/<int:review_pk>/', views.review_edit, name='review_edit'),
     path('books/<int:pk>/media/', views.book_media, name='book_media'),
     path('publishers/<int:pk>/', views.publisher_edit, name='publisher_detail'),
-    path('publishers/new/', views.publisher_edit, name='publisher_create')
+    path('publishers/new/', views.publisher_edit, name='publisher_create'),
+    path('api/login', api_views.Login.as_view(), name='login')
 ]
