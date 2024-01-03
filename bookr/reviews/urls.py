@@ -13,5 +13,6 @@ urlpatterns = [
     path('books/<book_pk>/reviews/<review_pk>', views.review_edit, name="review_edit"),
     path('books/<pk>/media/', views.book_media, name="media"),
     path('api/first_api_view/', api_views.first_api_view),
-    path('api/all_books/', api_views.AllBooks.as_view(), name='all_books')
+    path('api/all_books/', api_views.AllBooks.as_view(), name='all_books'),
+    path('api/contributors/', api_views.ContributorView.as_view(), name='contributors')
 ]
