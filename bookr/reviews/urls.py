@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path
-from . import views
+from . import views, api_views
 
 urlpatterns = [
     path('', views.index),
@@ -11,4 +11,6 @@ urlpatterns = [
     path('publishers/new', views.publisher_edit, name="publisher_create"),
     path('books/<book_pk>/reviews/new', views.review_edit, name="review_create"),
     path('books/<book_pk>/reviews/<review_pk>', views.review_edit, name="review_edit"),
-    path('books/<pk>/media/', views.book_media, name="media")]
+    path('books/<pk>/media/', views.book_media, name="media"),
+    path('api/first_api_view/', api_views.first_api_view),
+]
