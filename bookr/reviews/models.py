@@ -28,6 +28,8 @@ class Contributor(models.Model):
     def __str__(self):
         return self.first_names
 
+    def number_contributions(self):
+        return self.bookcontributor_set.count() # NOT self.book_set.count()
 
 class Book(models.Model):
     """A published book."""
