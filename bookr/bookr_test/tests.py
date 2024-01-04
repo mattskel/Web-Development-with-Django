@@ -1,6 +1,7 @@
-from django.test import TestCase, Client
-from django.contrib.auth.models import User
+from django.test import TestCase, Client, RequestFactory
+from django.contrib.auth.models import User, AnonymousUser
 from .models import Publisher
+from .views import greeting_view_user
 
 # Create your tests here.
 class TestPublisherModel(TestCase):
@@ -31,14 +32,23 @@ class TestLoggedInGreetingView(TestCase):
     """Test the greeting view for the authenticated user."""
     def setUp(self):
         test_user = User.objects.create_user(username='testuser', password='test@#628password')
-        test_user.save()
-        self.client = Client()
+        # test_user.save()
+        # self.client = Client()
+        self.test_user = test_user
+        self.test_user.save()
+        self.factory = RequestFactory()
 
     def test_user_greeting_not_authenticated(self):
-        response = self.client.get('/test/greet_user')
+        # response = self.client.get('/test/greet_user')
+        request = self.factory.get('/test/greet_user')
+        request.user = AnonymousUser()
+        response = greeting_view_user(request)
         self.assertEquals(response.status_code, 302)
 
     def test_user_authenticated(self):
-        login = self.client.login(username='testuser', password='test@#628password')
-        response = self.client.get('/test/greet_user')
+        request = self.factory.get('/test/greet_user')
+        request.user = self.test_user
+        response = greeting_view_user(request)
+        # login = self.client.login(username='testuser', password='test@#628password')
+        # response = self.client.get('/test/greet_user')
         self.assertEquals(response.status_code, 200)
