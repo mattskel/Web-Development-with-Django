@@ -1,9 +1,13 @@
+import io
+
+from django.http import HttpResponse
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from plotly.offline import plot
 import plotly.graph_objs as graphs
+import xlsxwriter
 
-from .utils import get_books_read_by_month
+from .utils import get_books_read_by_month, get_books_read
 
 @login_required
 def profile(request):
@@ -33,3 +37,33 @@ def profile(request):
         'permissions': permissions,
         'books_read_plot': plot_html
     })
+
+@login_required
+def reading_history(request):
+    user = request.user
+    books_read = get_books_read(user.username)
+
+    # in-memory file to store data
+    output = io.BytesIO()
+
+    workbook = xlsxwriter.Workbook(output)
+    worksheet = workbook.add_worksheet()
+
+    for row, book_read in enumerate(books_read):
+        worksheet.write(row, 0, book_read['title'])
+
+    # Close the workbook before sending the data.
+    workbook.close()
+
+    # Rewind the buffer
+    # output.seek(0)
+
+    # Set up the Http response.
+    filename = 'reading_history.xlsx'
+    response = HttpResponse(
+        output.getvalue(),
+        content_type="application/vnd.ms-excel"
+    )
+    response["Content-Disposition"] = 'attachment; filename=reading_history.xlsx'
+
+    return response

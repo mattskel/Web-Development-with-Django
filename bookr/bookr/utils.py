@@ -13,3 +13,11 @@ def get_books_read_by_month(username):
             .values('date_created__month')
             .annotate(book_count=Count('book__title'))) # Count groups on title prop and adds to object
     return books
+
+def get_books_read(username):
+    books = (
+        Review.objects
+        .filter(creator__username__contains=username)
+        .all())
+
+    return [{'title': book_read.book.title} for book_read in books]
