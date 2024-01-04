@@ -20,7 +20,7 @@ from django.urls import include, path
 from django.conf import settings
 from django.conf.urls.static import static
 
-from bookr.views import profile
+from bookr.views import profile, reading_history
 
 urlpatterns = [
     path('book_management/', include('book_management.urls')),
@@ -28,7 +28,8 @@ urlpatterns = [
     path('accounts/', include(('django.contrib.auth.urls', 'auth'), namespace='accounts')),
     path('accounts/profile/', profile, name='profile'),
     path('admin/', admin.site.urls),
-    path('', include('reviews.urls'))
+    path('', include('reviews.urls')),
+    path('reading_history/', reading_history, name='reading_history')
 ]
 
 if settings.DEBUG:
