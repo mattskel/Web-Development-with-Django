@@ -60,6 +60,9 @@
     </p>
   </div>
 </div>
+{% autoescape off %}
+  {{ books_read_plot }}
+{% endautoescape %}
 
-{% book_list user.username %}
+{% comment %} {% book_list user.username %} {% endcomment %}
 {% endblock %}
