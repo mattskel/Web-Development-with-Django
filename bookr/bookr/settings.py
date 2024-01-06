@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'reviews',
     'filter_demo',
     'book_management',
+    'bookr_test',
 ]
 
 MIDDLEWARE = [
