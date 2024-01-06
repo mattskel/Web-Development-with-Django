@@ -46,6 +46,8 @@ class Dev(Configuration):
         'book_management',
         'bookr_test',
         'debug_toolbar',
+        'crispy_forms',
+        'crispy_bootstrap4'
     ]
 
     MIDDLEWARE = [
@@ -142,6 +144,7 @@ class Dev(Configuration):
 
     INTERNAL_IPS = ['127.0.0.1']
 
+    CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 class Prod(Dev):
     DEBUG = False
