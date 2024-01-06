@@ -45,6 +45,7 @@ class Dev(Configuration):
         'filter_demo',
         'book_management',
         'bookr_test',
+        'debug_toolbar',
     ]
 
     MIDDLEWARE = [
@@ -55,6 +56,7 @@ class Dev(Configuration):
         'django.contrib.auth.middleware.AuthenticationMiddleware',
         'django.contrib.messages.middleware.MessageMiddleware',
         'django.middleware.clickjacking.XFrameOptionsMiddleware',
+        'debug_toolbar.middleware.DebugToolbarMiddleware',
     ]
 
     ROOT_URLCONF = 'bookr.urls'
@@ -137,6 +139,9 @@ class Dev(Configuration):
 
     MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
     MEDIA_URL = '/media/'
+
+    INTERNAL_IPS = ['127.0.0.1']
+
 
 class Prod(Dev):
     DEBUG = False
