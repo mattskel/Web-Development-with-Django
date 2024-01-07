@@ -25,7 +25,8 @@ from bookr.views import profile, reading_history
 urlpatterns = [
     path('book_management/', include('book_management.urls')),
     path('filter_demo/', include('filter_demo.urls')),
-    path('accounts/', include(('django.contrib.auth.urls', 'auth'), namespace='accounts')),
+    # path('accounts/', include(('django.contrib.auth.urls', 'auth'), namespace='accounts')),
+    path('accounts/', include('allauth.urls')),
     path('accounts/profile/', profile, name='profile'),
     path('admin/', admin.site.urls),
     path('', include('reviews.urls')),
@@ -35,3 +36,9 @@ urlpatterns = [
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+    import debug_toolbar
+
+    urlpatterns = [
+        path('__debug__/', include(debug_toolbar.urls)),
+    ] + urlpatterns

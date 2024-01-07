@@ -185,4 +185,4 @@ def book_media(request, pk):
         "form": form, 
         "model_type": 'Book',
         "instance": book,
-        "is_file_upload": True})
+    })
