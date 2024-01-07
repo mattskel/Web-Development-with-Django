@@ -25,7 +25,8 @@ from bookr.views import profile, reading_history
 urlpatterns = [
     path('book_management/', include('book_management.urls')),
     path('filter_demo/', include('filter_demo.urls')),
-    path('accounts/', include(('django.contrib.auth.urls', 'auth'), namespace='accounts')),
+    # path('accounts/', include(('django.contrib.auth.urls', 'auth'), namespace='accounts')),
+    path('accounts/', include('allauth.urls')),
     path('accounts/profile/', profile, name='profile'),
     path('admin/', admin.site.urls),
     path('', include('reviews.urls')),

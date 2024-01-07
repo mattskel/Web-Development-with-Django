@@ -29,11 +29,19 @@ class Dev(Configuration):
 
     ALLOWED_HOSTS = values.ListValue([])
 
+    SITE_ID = 1
+    AUTHENTICATION_BACKENDS = [
+        # Needed to login by username in Django admin, regardless of `allauth`
+        'django.contrib.auth.backends.ModelBackend',
+        # `allauth` specific authentication methods, such as login by email
+        'allauth.account.auth_backends.AuthenticationBackend',
+    ]
 
     # Application definition
 
     INSTALLED_APPS = [
         'bookr_admin.apps.BookrAdminConfig',
+        'django.contrib.sites',
         'django.contrib.auth',
         'django.contrib.contenttypes',
         'django.contrib.sessions',
@@ -47,7 +55,12 @@ class Dev(Configuration):
         'bookr_test',
         'debug_toolbar',
         'crispy_forms',
-        'crispy_bootstrap4'
+        'crispy_bootstrap4',
+        'allauth',
+        'allauth.account',
+        'allauth.socialaccount',
+        'allauth.socialaccount.providers.github',
+        'allauth.socialaccount.providers.google',
     ]
 
     MIDDLEWARE = [
@@ -59,7 +72,19 @@ class Dev(Configuration):
         'django.contrib.messages.middleware.MessageMiddleware',
         'django.middleware.clickjacking.XFrameOptionsMiddleware',
         'debug_toolbar.middleware.DebugToolbarMiddleware',
+        'allauth.account.middleware.AccountMiddleware'
     ]
+
+    # Provider specific settings
+    SOCIALACCOUNT_PROVIDERS = {
+        'github': {
+            'APP': {
+                'client_id': '1ec2d674f8cd9f949bc8',
+                'secret': '852d2ff49a486c8833377f223a03e86602472c74',
+                'key': ''
+            }
+        }
+    }
 
     ROOT_URLCONF = 'bookr.urls'
 
